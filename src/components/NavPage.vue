@@ -12,7 +12,7 @@
         <h1><span>Ez</span>shop</h1>
       </div>
       <div class="flex justify-center items-center gap-4">
-        <login-page v-show="login" ref="loginPage"></login-page>
+        <login-page v-show="login"></login-page>
         <register-page v-show="register"></register-page>
         <button
           @click="(login = !login), (register = false)"
@@ -45,6 +45,7 @@
 import LoginPage from "./LoginPage.vue";
 import ProductCart from "./ProductCart.vue";
 import RegisterPage from "./RegisterPage.vue";
+// import ClickOutside from "vue-click-outside";
 
 export default {
   name: "NavPage",
@@ -61,18 +62,24 @@ export default {
       register: false,
     };
   },
-  mounted() {
-    const onClick = (evt) => {
-      if (this.login && !evt.target.isSameNode(this.$refs.loginPage.$el)) {
-        this.login = false;
-      }
-    };
-    window.addEventListener("click", onClick);
-  },
+  //   mounted() {
+  //     // const onClick = (evt) => {
+  //     //   if (this.login && !evt.target.isSameNode(this.$refs.loginPage.$el)) {
+  //     //     this.login = false;
+  //     //   }
+  //     // };
+  //     // window.addEventListener("click", onClick);
+  //   },
   methods: {
     back(compDis) {
       this.compDis = false;
       return compDis;
+    },
+    toggle() {
+      this.opened = true;
+    },
+    hide() {
+      this.opened = false;
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute top-[4.5rem] bg-white flex flex-col p-3 rounded-md overflow-y-scroll h-[700px]"
+    class="absolute top-[4.5rem] bg-white flex flex-col p-3 rounded-md overflow-y-scroll h-[450px]"
   >
     <div class="flex justify-center items-center gap-x-48">
       <div class="flex justify-center items-center">
@@ -40,7 +40,7 @@
     </div>
     <div class="pt-8 pb-4">
       <button
-        class="pt-0.5 pl-3 pb-0.5 pr-3 w-max text-[#0070E0] bg-white border border-solid border-[#0070E0] rounded hover:bg-[#0070E0] hover:text-white hover:duration-500"
+        class="w-full pt-0.5 pl-3 pb-0.5 pr-3 w-max text-[#0070E0] bg-white border border-solid border-[#0070E0] rounded hover:bg-[#0070E0] hover:text-white hover:duration-500"
       >
         Proceed to Pay
       </button>
