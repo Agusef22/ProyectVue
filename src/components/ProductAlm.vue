@@ -29,7 +29,7 @@
       <div class="flex justify-center items-center gap-x-3">
         <button
           class="pt-0.5 pl-3 pb-0.5 pr-3 w-max text-[#0070E0] bg-white border border-solid border-[#0070E0] rounded hover:bg-[#0070E0] hover:text-white hover:duration-500"
-          @click="$emit('addToCart', product)"
+          @click="$store.commit('ADD_TO_CART', product)"
         >
           Add Cart
         </button>

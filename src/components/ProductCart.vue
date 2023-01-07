@@ -1,6 +1,6 @@
 <template>
   <div
-    class="absolute top-[4.5rem] bg-white flex flex-col p-3 rounded-md overflow-y-scroll h-[450px]"
+    class="absolute top-[4.5rem] bg-white flex flex-col p-3 rounded-md overflow-y-scroll h-[300px]"
   >
     <div class="flex justify-center items-center gap-x-48">
       <div class="flex justify-center items-center">
@@ -14,12 +14,13 @@
       </div>
       <button
         class="pt-0.5 pl-3 pb-0.5 pr-3 w-max text-[#0070E0] bg-white border border-solid border-[#0070E0] rounded hover:bg-[#0070E0] hover:text-white hover:duration-500"
+        @click="$store.commit('EMPTY_CART')"
       >
         Empty Cart
       </button>
     </div>
     <div
-      v-for="product in productList"
+      v-for="product in $store.state.productList"
       :key="product.id"
       class="flex justify-center items-center pt-8 gap-x-6"
     >
@@ -31,12 +32,16 @@
         <span class="font-semibold text-[#0070E0]">${{ product.price }}</span>
         <h3>Amount: {{ product.amount }}</h3>
       </div>
-      <img class="h-6 cursor-pointer" src="../assets/img/close.png" alt="" />
+      <img
+        @click="$store.commit('REMOVE_FROM_CART', product)"
+        class="h-6 cursor-pointer"
+        src="../assets/img/close.png"
+        alt=""
+      />
     </div>
 
-    <div class="flex justify-center items-center gap-48 pt-8">
-      <h2>Total</h2>
-      <span>Total Price</span>
+    <div class="flex justify-start items-center pl-8 pt-8">
+      <h2>Total ${{ totalPriceProducts() }}</h2>
     </div>
     <div class="pt-8 pb-4">
       <button
@@ -51,11 +56,21 @@
 export default {
   name: "ProductCart",
   components: {},
-  props: ["productList"],
+  props: [],
   data() {
     return {
       compDis: false,
+      totalPrice: 0,
     };
+  },
+  methods: {
+    totalPriceProducts() {
+      this.totalPrice = this.$store.state.productList.reduce(
+        (acc, prod) => acc + prod.amount * prod.price,
+        0
+      );
+      return this.totalPrice.toFixed(1);
+    },
   },
 };
 </script>

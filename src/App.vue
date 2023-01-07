@@ -1,6 +1,6 @@
 <template>
   <div class="bg-[#f5f5f5] font-sans font-normal text-sm" id="app">
-    <NavPage :productList="productList" />
+    <NavPage />
     <div class="container mx-auto">
       <h2 class="font-sans text-4xl pt-4">Almacen</h2>
       <div class="container-products">
@@ -8,7 +8,6 @@
           v-for="product in products"
           :key="product.id"
           :product="product"
-          @addToCart="addToCart"
         />
       </div>
     </div>
@@ -29,7 +28,6 @@ export default {
   data() {
     return {
       products: null,
-      productList: [],
     };
   },
   async mounted() {
@@ -38,23 +36,7 @@ export default {
     );
     this.products = data.products;
   },
-  methods: {
-    addToCart(product) {
-      // pasarle a NavPage product
-      const productExists = this.productList.some((p) => p.id === product.id);
-      if (productExists) {
-        this.productList = this.productList.map((p) => {
-          if (p.id === product.id) {
-            p.amount++;
-          }
-          return p;
-        });
-      } else {
-        product.amount = 1;
-        this.productList.push(product);
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 
