@@ -31,7 +31,8 @@ export default new Vuex.Store({
     },
     SET_CART(state, cart) {
       state.cart = cart
-    }
+    },
+    
   },
   actions: {
     async getProducts({commit}) {

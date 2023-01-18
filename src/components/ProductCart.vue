@@ -38,6 +38,7 @@
       <div class="pt-8 pb-4">
         <button
           class="pt-0.5 pl-3 pb-0.5 pr-3 w-max text-[#0070E0] bg-white border border-solid border-[#0070E0] rounded hover:bg-[#0070E0] hover:text-white hover:duration-500"
+          @click="createOrder()"
         >
           Proceed to Pay
         </button>
@@ -47,6 +48,7 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import axios from "axios";
 export default {
   name: "ProductCart",
   data() {
@@ -62,14 +64,26 @@ export default {
       );
       return this.totalPrice.toFixed(1);
     },
-    // createOrder() {
-    //   const order = {
-    //     userId: this.user.id,
-    //     products: this.cart,
-    //   };
-
-    //   // mockAPI.post(order)
-    // },
+    async createOrder() {
+      const APIURL = "https://63c3271ab0c286fbe5f9b0b1.mockapi.io/orders";
+      const order = {
+        userId: this.user.id,
+        userName: this.user.firstname,
+        products: this.cart,
+      };
+      if (this.cart.length === 0) {
+        alert("please put at least one product in the cart");
+      } else {
+        await axios({
+          method: "post",
+          url: APIURL,
+          data: order,
+        });
+        alert("successful purchase, Thanks you");
+        this.$store.commit("EMPTY_CART");
+        this.$router.push("/");
+      }
+    },
   },
   computed: {
     ...mapState(["user", "cart"]),

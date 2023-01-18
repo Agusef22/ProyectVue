@@ -119,12 +119,31 @@
         </div>
       </div>
     </div>
-    <h2>Orders</h2>
-    <pre>{{ orders }}</pre>
-    <div>
-      <p></p>
-      <p></p>
-      <p></p>
+    <h2 class="text-center text-xl mt-2">Orders</h2>
+
+    <div class="flex">
+      <div
+        class="flex justify-center items-center gap-2 flex-col m-8 w-64 border shadow-md rounded-md"
+        v-for="order in orders"
+        :key="order.id"
+      >
+        <p>
+          Purchase of: <span class="font-bold">{{ order.userName }}</span>
+        </p>
+        <p>Purchased Products</p>
+        <div v-for="item in order.products" :key="item.id">
+          <div class="flex gap-4">
+            <p>{{ item.name }}</p>
+            <p>${{ item.price }}</p>
+          </div>
+        </div>
+        <button
+          class="ml-2 mt-2 pt-0.5 pl-3 pb-0.5 pr-3 w-max text-white bg-red-600 border border-solid rounded"
+          @click="removeOrder(order.id)"
+        >
+          Remove
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -216,6 +235,19 @@ export default {
 
       alert("product removed");
       this.$store.dispatch("getProducts");
+    },
+    async removeOrder(id) {
+      const APIURL = "https://63c3271ab0c286fbe5f9b0b1.mockapi.io/orders/";
+      await axios({
+        method: "delete",
+        url: APIURL + id,
+      });
+
+      alert("Order removed");
+      const { data } = await axios.get(
+        "https://63c3271ab0c286fbe5f9b0b1.mockapi.io/orders"
+      );
+      this.orders = data;
     },
   },
   async created() {
