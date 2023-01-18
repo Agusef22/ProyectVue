@@ -19,17 +19,18 @@
 
       <div v-show="extraInfoProduct">
         <p class="font-extralight">
-          Brand: <span class="font-semibold">{{ product.brand }}</span>
+          Description:
+          <span class="font-semibold">{{ product.description }}</span>
         </p>
         <p class="font-extralight">
-          Weight: <span class="font-semibold">{{ product.presentation }}</span>
+          Material: <span class="font-semibold">{{ product.material }}</span>
         </p>
       </div>
 
       <div class="flex justify-center items-center gap-x-3">
         <button
           class="pt-0.5 pl-3 pb-0.5 pr-3 w-max text-[#0070E0] bg-white border border-solid border-[#0070E0] rounded hover:bg-[#0070E0] hover:text-white hover:duration-500"
-          @click="$store.commit('ADD_TO_CART', product)"
+          @click="addToCart"
         >
           Add Cart
         </button>
@@ -45,14 +46,43 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
-  name: "ProductAlm",
+  name: "ProductsSell",
   props: ["product"],
   data() {
     return {
       extraInfoProduct: false,
     };
   },
+  methods: {
+    addToCart() {
+      if (!this.user) {
+        this.$router.push("login");
+        return;
+      }
+      const tempProduct = this.product;
+      let tempCart = this.cart;
+
+      const productExists = this.cart.some((p) => p.id === tempProduct.id);
+      if (productExists) {
+        tempCart = this.cart.map((p) => {
+          if (p.id === tempProduct.id) {
+            p.amount++;
+          }
+          return p;
+        });
+        this.$store.commit("SET_CART", tempCart);
+      } else {
+        tempProduct.amount = 1;
+
+        this.$store.commit("ADD_TO_CART", tempProduct);
+      }
+    },
+  },
+  computed: {
+    ...mapState(["cart", "user"]),
+  },
 };
 </script>
-<style scoped></style>

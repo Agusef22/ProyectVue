@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-20 right-64 bg-white p-5 rounded-md shadow-md">
+  <div class="mt-6 bg-white p-5 rounded-md shadow-md">
     <form
       class="flex flex-col justify-center items-center gap-4"
       @submit.prevent="register"
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -35,20 +36,26 @@ export default {
     };
   },
   methods: {
-    register() {
-      const listUsers = JSON.parse(localStorage.getItem("users")) || [];
+    async register() {
+      const APIURL = "https://63b9d9504482143a3f1ce926.mockapi.io/";
+      const listUsers = (await axios.get(APIURL + "users")) || [];
+      const listUserss = listUsers.data;
 
       if (this.username === "" || this.password === "") {
         alert("Please, complete the inputs");
-      } else if (listUsers.some((user) => user.username === this.username)) {
+      } else if (listUserss.some((user) => user.firstname === this.username)) {
         alert("username already exist");
       } else {
-        listUsers.push({
-          username: this.username,
-          password: this.password,
+        await axios({
+          method: "post",
+          url: APIURL + "users",
+          data: {
+            firstname: this.username,
+            password: this.password,
+          },
         });
-        localStorage.setItem("users", JSON.stringify(listUsers));
-        console.log(listUsers);
+        alert("user created");
+        this.$router.push("/login");
       }
     },
   },

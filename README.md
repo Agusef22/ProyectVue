@@ -1,4 +1,4 @@
-# carrito-de-compras
+# carrito-compras
 
 ## Project setup
 ```

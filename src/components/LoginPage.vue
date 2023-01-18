@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute top-20 right-64 bg-white p-5 rounded-md shadow-md">
+  <div class="mt-6 bg-white p-5 rounded-md shadow-md">
     <form
       class="flex flex-col justify-center items-center gap-4"
       @submit.prevent="login"
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -35,12 +36,13 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
+      const APIURL = "https://63b9d9504482143a3f1ce926.mockapi.io/";
       if (this.username === "" || this.password === "") {
         alert("Please, complete the inputs");
       } else {
-        const users = JSON.parse(localStorage.getItem("users"));
-        const user = users.find((user) => user.username === this.username);
+        const { data: users } = await axios.get(APIURL + "users");
+        const user = users.find((user) => user.firstname === this.username);
 
         if (!user) {
           alert("this user doesnt exist");
@@ -52,9 +54,15 @@ export default {
           return;
         }
 
-        alert("Logged in");
+        this.$store.commit("SET_USER", user);
 
-        // localStorage.setItem('user', JSON.stringify({ username: this.username }));
+        if (user.isAdmin) {
+          this.$router.push("admin");
+        } else {
+          this.$router.push("/");
+        }
+
+        alert("Logged in");
       }
     },
   },
