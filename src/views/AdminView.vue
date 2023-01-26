@@ -97,7 +97,7 @@
                 class="mt-2 pt-0.5 pl-3 pb-0.5 pr-3 w-max text-[#0070E0] bg-white border border-solid border-[#0070E0] rounded hover:bg-[#0070E0] hover:text-white hover:duration-500"
                 v-click-outside="hide"
                 @click="toggle"
-                v-on="
+                v-on:click="
                   onModal(
                     product.id,
                     product.photo,
@@ -180,6 +180,7 @@ export default {
       this.opened = false;
     },
     onModal(id, photo, name, price) {
+      console.log("THE ID OF THE SELECTED PRODUCT IS", id);
       this.productId = id;
       this.productModify.id = id;
       this.productModify.photo = photo;
@@ -223,7 +224,7 @@ export default {
       }
 
       this.opened = false;
-
+      this.$store.dispatch("getProducts");
       alert("modified product");
     },
     async removeProduct(id) {
